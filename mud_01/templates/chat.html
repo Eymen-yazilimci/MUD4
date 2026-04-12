@@ -1,0 +1,36 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<div class="chat-header">
+  <a href="/" class="back-btn">← Geri</a>
+  <h2>{{ room.name }}</h2>
+</div>
+
+<div class="messages">
+  {% for m in messages %}
+    <div class="message-box {% if m.username == username %}me{% else %}other{% endif %}">
+      <div class="bubble">
+        <p><strong>{{ m.username }}</strong></p>
+        <p>
+          {{ m.text }}
+          {% if m.timestamp %}
+            <small class="time">{{ m.timestamp.strftime("%H:%M") }}</small>
+          {% endif %}
+        </p>
+        {% if m.gif %}
+          <img src="{{ m.gif }}" alt="gif" class="gif">
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+<div id="typing-indicator" style="color:#1b9aaa; font-style:italic;"></div>
+
+<div class="chat-footer">
+  <form method="POST" action="/send">
+    <input type="hidden" name="room_id" value="{{ room.id }}">
+    <input type="text" name="text" placeholder="Mesaj yaz...">
+    <input type="text" name="gif_url" placeholder="GIF URL">
+    <button type="submit">Gönder</button>
+  </form>
+</div>

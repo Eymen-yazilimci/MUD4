@@ -1,0 +1,47 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<h1>Başlıklar</h1>
+
+<!-- Kullanıcı adı seçimi -->
+<form method="POST" action="/setname">
+  <input type="text" name="username" placeholder="Kullanıcı adını gir" required>
+  <button type="submit">Kaydet</button>
+</form>
+
+<!-- Oda oluşturma -->
+<form method="POST" action="/create">
+  <input type="text" name="title" placeholder="Yeni başlık aç" required>
+  
+  <label>
+    <input type="radio" name="room_type" value="open" checked> Şifresiz
+  </label>
+  <label>
+    <input type="radio" name="room_type" value="locked"> Şifreli
+  </label>
+  
+  <input type="password" name="password" placeholder="Şifre (şifreli oda için)">
+  <button type="submit">Oluştur</button>
+</form>
+
+<!-- Oda silme -->
+<form method="POST" action="/delete">
+  <input type="text" name="room_name" placeholder="Silinecek oda adı">
+  <button type="submit" class="delete">Sil</button>
+</form>
+
+
+
+
+<div class="room-list">
+  {% for r in rooms %}
+    <a href="/chat/{{ r.id }}" class="room-box">
+      {{ r.name }}
+      {% if r.locked %}
+        🔒
+      {% endif %}
+      {% if r.count > 0 %}
+        <span class="badge">{{ r.count }}</span>
+      {% endif %}
+    </a>
+  {% endfor %}
+</div>
